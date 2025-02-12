@@ -17,20 +17,24 @@ st.write("Faça o upload de uma imagem para descobrir se é um cachorro ou um ga
 MODEL_PATH = "modelo_mobilenet_pet.h5"
 model = load_model(MODEL_PATH)
 
+# Função para processar imagem
 def process_image(uploaded_image):
     img = Image.open(uploaded_image).convert('RGB')
-    img = img.resize((224, 224))  # MobileNet espera imagens 224x224
+    img = img.resize((224, 224))  # MobileNet espera imagens de 224x224
     img_array = img_to_array(img)
-    img_array = np.expand_dims(img_array, axis=0)
-    img_array = preprocess_input(img_array)  # Pré-processamento para MobileNet
+    img_array = np.expand_dims(img_array, axis=0)  # Adicionar dimensão do batch
+    img_array = preprocess_input(img_array)  # Normalizar a entrada para o MobileNet
     return img_array
 
+# Upload de imagem
 uploaded_image = st.file_uploader("Envie uma imagem de um gato ou cachorro:", type=["jpg", "jpeg", "png"])
 
 if uploaded_image is not None:
     st.image(uploaded_image, caption="Imagem carregada", use_container_width=True)
+    
     img_array = process_image(uploaded_image)
     
+    # Fazer a predição
     prediction = model.predict(img_array)
     class_name = "Cachorro 🐶" if prediction >= 0.5 else "Gato 🐱"
     confidence = prediction[0][0] if prediction >= 0.5 else 1 - prediction[0][0]
