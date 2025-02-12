@@ -12,7 +12,7 @@ st.markdown("[Link para o código](https://colab.research.google.com/drive/1wx17
 
 st.write("Faça o upload de uma imagem para descobrir se é um cachorro ou um gato!")
 
-MODEL_PATH = "modelo_cachorro_gato.h5"
+MODEL_PATH = "modelo_mobile_pet.h5"
 model = load_model(MODEL_PATH)
 
 def process_image(uploaded_image):
