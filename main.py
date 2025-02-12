@@ -8,8 +8,8 @@ import numpy as np
 
 st.set_page_config(page_title="Classificador de Pets", page_icon="🐶🐱")
 
-st.title("Classificador de Pets 🐶🐱")
-st.markdown("[Link para o código](https://colab.research.google.com/drive/1wx17kG8Cb4iLZ8TjCdloM4FIsWRqxPz8?usp=sharing)")
+st.title("Classificador de Pets com o modelo Mobile Net 🐶🐱")
+st.markdown("[Link para o código](https://colab.research.google.com/drive/1TPXzAxRrZjy4z2n8Xs7at_dYrvXEQdmG?usp=sharing)")
 
 st.write("Faça o upload de uma imagem para descobrir se é um cachorro ou um gato!")
 
