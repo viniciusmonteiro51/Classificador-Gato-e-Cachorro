@@ -19,11 +19,15 @@ model = load_model(MODEL_PATH)
 
 # Função para processar imagem
 def process_image(uploaded_image):
-    img = Image.open(uploaded_image).convert('RGB')
+    img = Image.open(uploaded_image).convert('RGB')  # Garante RGB
     img = img.resize((224, 224))  # MobileNet espera imagens de 224x224
-    img_array = img_to_array(img)
-    img_array = np.expand_dims(img_array, axis=0)  # Adicionar dimensão do batch
-    img_array = preprocess_input(img_array)  # Normalizar a entrada para o MobileNet
+    img_array = img_to_array(img)  # Converte para array
+    img_array = np.expand_dims(img_array, axis=0)  # Adiciona dimensão do batch
+    img_array = preprocess_input(img_array)  # Normaliza a entrada para o MobileNet
+    
+    # Debugging: Exibir shape da imagem processada
+    st.write(f"Tamanho da imagem processada: {img_array.shape}")
+    
     return img_array
 
 # Upload de imagem
@@ -34,10 +38,15 @@ if uploaded_image is not None:
     
     img_array = process_image(uploaded_image)
     
-    # Fazer a predição
-    prediction = model.predict(img_array)
-    class_name = "Cachorro 🐶" if prediction >= 0.5 else "Gato 🐱"
-    confidence = prediction[0][0] if prediction >= 0.5 else 1 - prediction[0][0]
+    # Conferindo a entrada do modelo antes de rodar a predição
+    if img_array.shape != (1, 224, 224, 3):
+        st.error("Erro: A entrada da imagem tem um formato inesperado.")
+    else:
+        # Fazer a predição
+        prediction = model.predict(img_array)
+        
+        class_name = "Cachorro 🐶" if prediction >= 0.5 else "Gato 🐱"
+        confidence = prediction[0][0] if prediction >= 0.5 else 1 - prediction[0][0]
 
-    st.write(f"### Resultado: **{class_name}**")
-    st.write(f"Confiança: **{confidence * 100:.2f}%**")
+        st.write(f"### Resultado: **{class_name}**")
+        st.write(f"Confiança: **{confidence * 100:.2f}%**")
