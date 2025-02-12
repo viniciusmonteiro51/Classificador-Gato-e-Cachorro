@@ -13,20 +13,18 @@ st.markdown("[Link para o código](https://colab.research.google.com/drive/1TPXz
 
 st.write("Faça o upload de uma imagem para descobrir se é um cachorro ou um gato!")
 
-# Carregar o modelo treinado baseado no MobileNet
 MODEL_PATH = "modelo_mobilenet_pet.h5"
 model = load_model(MODEL_PATH)
 
-# Verificar a entrada esperada do modelo
-input_shape = model.input_shape[1:3]  # Pega altura e largura esperadas
+input_shape = model.input_shape[1:3]
 print(f"Modelo espera entrada: {input_shape}")
 
 def process_image(uploaded_image):
-    img = Image.open(uploaded_image).convert('RGB')  # Converte para RGB
-    img = img.resize(input_shape)  # Ajusta para o tamanho que o modelo espera
+    img = Image.open(uploaded_image).convert('RGB')
+    img = img.resize(input_shape)
     img_array = img_to_array(img)
-    img_array = img_array / 255.0  # Normaliza
-    img_array = np.expand_dims(img_array, axis=0)  # Expande dimensão para batch
+    img_array = img_array / 255.0
+    img_array = np.expand_dims(img_array, axis=0)
     return img_array
 
 uploaded_image = st.file_uploader("Envie uma imagem de um gato ou cachorro:", type=["jpg", "jpeg", "png"])
